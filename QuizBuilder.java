@@ -7,19 +7,19 @@ class QuizBuilder {
 		Question q = new Question("What is the capital of Massachusetts?", "Amherst", "Boston", "Springfield", "Worchester", "Holyoke", "Boston");
 		System.out.println(q);
 		
-	}//main 
-	
-	static void read(String filename) {} //read file
-	static void write() {} //creates .csv file
+	}//main
+	//menu printed during startup 
+	static void printMenu() {} //printMenu 
+	//read file and create array/arraylist of question objects 
+	static void read(String filename) {} //read
+	static void write() {} //write 
 	static void checkAnswer(String guess) {}//can be either letter ("A") or whole answer ("B. Boston") 
 	
 }//class QuizBuilder 
 
 class Question {
-	//after file is read, use .split(,) to get question, choices (A-E), and answer
-	//currently the choices are set a strings so that the questions can have different answers,
-	//the content of them doesn't matter -- can this be done with ints instead? will be even easier handling
 	String question; String a; String b; String c; String d; String e; String ans; 
+	//instantiate new question object
 	public Question(String q, String a, String b, String c, String d, String e, String ans) {
 		this.question = q; 
 		this.a = a; 
@@ -28,7 +28,7 @@ class Question {
 		this.d = d; 
 		this.e = e; 
 		this.ans = ans;
-	} //constructor, create new Question Object 
+	} //constructor
 	//		GETTERS
 	public String getA() { return a; } 
 	public String getB() { return b; }
