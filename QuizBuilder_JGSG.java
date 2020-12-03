@@ -1,17 +1,20 @@
 /* file: QuizBuilder/QuizBuilder_JGSG.java */
+
 import java.util.*;
 import java.io.*; 
 import java.util.Scanner;
 
 /* 
-
+disclaimer goes here
 */  
+
 class QuizBuilder {
 	public static Scanner cin = new Scanner(System.in);
 	public static void main(String[] args) {
-		//Issue is making file path general enough for users -- how to do that???
-		File f = new File("C:\\Users\\jujub\\Documents\\GitHub\\QuizBuilder\\test_GRE_questions.csv");
-		ReadCSV try1 = new ReadCSV(f);//an instance of the ReadCSV() class
+		File file = new File("C:\\Users\\jujub\\Documents\\GitHub\\QuizBuilder\\test_GRE_questions.csv");
+		//File file = new File("test_GRE_questions.csv").getAbsolutePath();
+		
+		ReadCSV try1 = new ReadCSV(file); //an instance of the ReadCSV() class
 		
 		ArrayList<Question> Quiz = try1.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
 		
@@ -27,8 +30,9 @@ class QuizBuilder {
 			System.out.println("Menu.");
 			System.out.println("1 = Instructions");
 			System.out.println("2 = Try math quiz");
-			System.out.println("3 = Add a question");
-			System.out.println("4 = Display authors and credits");
+			System.out.println("3 = Try vocabulary quiz");
+			System.out.println("4 = Add a question"); 
+			System.out.println("5 = Display authors and credits");
 			System.out.println("0 = exit");
 			System.out.println("Pick one.");
 			int menu_entry = cin.nextInt();
@@ -36,8 +40,9 @@ class QuizBuilder {
 			switch(menu_entry) {
 				//added new function calls
 				case 1 : printInstructions(file); break; 
-				case 2 : getMathQuiz(file); break; 
-				case 3 : addQuestion(file); break; // adds question to end of current CSV (??) (or creates new one??)
+				case 2 : getMathQuiz(math_file); break;
+				case 3 : getVocabQuiz(vocab_file); break; 
+				case 3 : addQuestion(file); break; // save for later, only do if time
 				case 4 : printCredits(); break; // code for this could be written here but looks neater if it's all funcs :) 
 				case 0 : break;
 				default : System.out.println("Cannot understand your response. Please try again.");
@@ -50,6 +55,8 @@ class QuizBuilder {
 		//INSTRUCTIONS FOR TEST GO HERE
 		printMenu(Q); 
 	} // printInstructions
+	
+	
 	
 }//class QuizBuilder 
 
@@ -66,11 +73,11 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 				System.out.println("file not found!");
 				System.out.println(ex);
 		}// catch for if the file is not found
-		ArrayList<Question> A = new ArrayList<>(); //list of Questions
+		ArrayList<Question> Question_List = new ArrayList<>(); //list of Questions
 		while ( fin.hasNext() ){ //do this until it reaches the end of the questions CSV
-			String s = fin.nextLine();
-			String[] q = s.split(",");
-			Question Q = new Question(q[0], q[1], q[2], q[3], q[4], q[5], q[6]); // make a question record
+			String current_question = fin.nextLine();
+			String[] questions = current_question.split(",");
+			Question Q = new Question(questions[0], questions[1], questions[2], questions[3], questions[4], questions[5], questions[6]); // make a question record
 			A.add(Q); // add each question to List of Questions
 		}//while
 		fin.close();
@@ -130,9 +137,10 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		int[] score = {number_correct_int, number_attempted_int};
 		int grade = (int) (score[0] / score[1]) * 100;
 		System.out.println("You scored " + score[0] + " out of " + score[1] + ".\nYour grade is " + grade + "%.");
+		//while loop -- end program early
 		return score;//returns an array with the score. ex. [3, 4]
 	
-	}//readRecord class
+	} // readRecord class
 	
 } // ReadCSV class 
 
