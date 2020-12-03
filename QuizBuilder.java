@@ -6,14 +6,24 @@ class QuizBuilder {
 		//test question, no files yet
 		Question q = new Question("What is the capital of Massachusetts?", "Amherst", "Boston", "Springfield", "Worchester", "Holyoke", "Boston");
 		System.out.println(q);
+		/* MENU
+		TAKE QUIZ (Y/N)
+		
 		
 	}//main
 	//menu printed during startup 
-	static void printMenu() {} //printMenu 
+	static void printMenu() {
+		/*
+		1. Access Latest Quiz
+		2. Create Quiz 
+		3. Export Quiz
+		*/
+	} //printMenu 
 	//read file and create array/arraylist of question objects 
 	static void read(String filename) {} //read
 	static void write() {} //write 
 	static void checkAnswer(String guess) {}//can be either letter ("A") or whole answer ("B. Boston") 
+	static void takeQuiz
 	
 }//class QuizBuilder 
 

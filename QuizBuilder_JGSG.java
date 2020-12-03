@@ -1,4 +1,4 @@
-/* file: Project/QuizBuilderAJAK.java */
+/* file: QuizBuilder/QuizBuilder_JGSG.java */
 import java.util.*;
 import java.io.*; 
 import java.util.Scanner;
@@ -7,12 +7,19 @@ import java.util.Scanner;
 
 */  
 class QuizBuilder {
-	//public static Scanner scan = new Scanner(System.in);
+	public static Scanner cin = new Scanner(System.in);
 	public static void main(String[] args) {
-	
-		ReadQuestionCSV try1 = new ReadQuestionCSV();//an instance of the ReadQuestionCSV() class
-		try1.process_the_CSV();//the process_the_CSV() function within the ReadQuestionCSV() class
+		//Issue is making file path general enough for users -- how to do that???
+		File f = new File("C:\\Users\\jujub\\Documents\\GitHub\\QuizBuilder\\test_GRE_questions.csv");
+		ReadCSV try1 = new ReadCSV(f);//an instance of the ReadCSV() class
 		
+		ArrayList<Question> Quiz = try1.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
+		
+		//printMenu(try1);
+		
+	}//main
+	
+	static void printMenu(ReadCSV file) {
 		/*
 		// MENU
 		// we need to swap out the cases with our own stuff
@@ -24,47 +31,53 @@ class QuizBuilder {
 			System.out.println("4 = Display authors and credits");
 			System.out.println("0 = exit");
 			System.out.println("Pick one.");
-			menu_entry2 = cin.nextInt();
+			int menu_entry = cin.nextInt();
 			
-			switch(menu_entry2) {
-					case 1 : print_sets(A, B); break; // name to be more specific
-					case 2 : intersection(A, B); break;
-					case 3 : union(A, B); break;
-					case 4 : differenceA_B(user_entry_string); break;
-					case 0 : break;
-					default : System.out.println("Cannot understand your response. Please try again.");
-				}
-		} while (menu_entry2 != 0);
+			switch(menu_entry) {
+				//added new function calls
+				case 1 : printInstructions(file); break; 
+				case 2 : getMathQuiz(file); break; 
+				case 3 : addQuestion(file); break; // adds question to end of current CSV (??) (or creates new one??)
+				case 4 : printCredits(); break; // code for this could be written here but looks neater if it's all funcs :) 
+				case 0 : break;
+				default : System.out.println("Cannot understand your response. Please try again.");
+			}
+		} while (menu_entry != 0);
 		*/
-		
-	}//main
-	// print menu during starting up 
-	static void printMenu() {} //printMenu
-	static void read(String filename) {} //read a CSV file
-	static void write() {} //write to a CSV file
-	static void checkAnswer(String guess) {}//can be either letter ("A") or whole answer ("B. Boston") 
+	} //printMenu
+	
+	static void printIntructions(ReadCSV Q) {
+		//INSTRUCTIONS FOR TEST GO HERE
+		printMenu(Q); 
+	} // printInstructions
 	
 }//class QuizBuilder 
 
-public class ReadQuestionCSV {  
-	public static void process_the_CSV() {
+public class ReadCSV { // ReadQuestionCSV --> ReadCSV
+	File fileName;
+	public ReadCSV(File fileName) {
+		this.fileName = fileName; 
+	} //ReadCSV constructor
+	
+	public ArrayList<Question> process_the_CSV() {
 		Scanner fin = null;
-	    try { 	fin = new Scanner(new File("C:\\Users\\sgill\\OneDrive\\Desktop\\CSC212\\QuizBuilder\\test_GRE_questions.csv")); 
-		}// attempts to read the file
+	    try { 	fin = new Scanner(fileName); }// attempts to read the file
 		catch (IOException ex) {
 				System.out.println("file not found!");
-				System.exit(1);
+				System.out.println(ex);
 		}// catch for if the file is not found
-		ArrayList<String> A = new ArrayList<>();//list of question records
+		ArrayList<Question> A = new ArrayList<>(); //list of Questions
 		while ( fin.hasNext() ){ //do this until it reaches the end of the questions CSV
-			Question rec = new Question(); // make a question record
-			int[] score = readRecord(rec, fin);
-		System.out.println(Integer.toString(score[0]) + " correct out of " + Integer.toString(score[1]));
-			A.add(rec.toString());
+			String s = fin.nextLine();
+			String[] q = s.split(",");
+			Question Q = new Question(q[0], q[1], q[2], q[3], q[4], q[5], q[6]); // make a question record
+			A.add(Q); // add each question to List of Questions
 		}//while
+		fin.close();
+		return A;
 	}
 
-	static int[] readRecord (Question G, Scanner fin) {	
+	static int[] readRecord (ArrayList<Question> A) {	// <-- pass in list of questions
 		
 		// counters
 		int number_correct_int = 0;
@@ -77,6 +90,7 @@ public class ReadQuestionCSV {
 		int amount_user_will_answer_int = amount_user_will_answer.nextInt(); //scanner takes in the next line
 		
 		do {
+			/* this was done in proccess!
 			String s = fin.nextLine(); // takes in the next CSV line 
 			String A[] = s.split(","); // splits the line whereever there is a comma
 			G.actual_question = A[0];
@@ -85,7 +99,7 @@ public class ReadQuestionCSV {
 			G.choice_C = A[3];
 			G.choice_D = A[4];
 			G.choice_E = A[5];
-			G.correct_answer = A[6];
+			G.correct_answer = A[6]; */
 			
 			System.out.println("Question:");
 			System.out.println(A[0]);
@@ -114,15 +128,18 @@ public class ReadQuestionCSV {
 		} while ( amount < amount_user_will_answer_int && fin.hasNext());
 		//do this for the number of questions the user wants or until the CSV runs out of questions
 		int[] score = {number_correct_int, number_attempted_int};
+		int grade = (int) (score[0] / score[1]) * 100;
+		System.out.println("You scored " + score[0] + " out of " + score[1] + ".\nYour grade is " + grade + "%.");
 		return score;//returns an array with the score. ex. [3, 4]
 	
 	}//readRecord class
-}
+	
+} // ReadCSV class 
 
 public class Question {
 	String actual_question; String choice_A; String choice_B; String choice_C; String choice_D; String choice_E; String correct_answer; 
 	//instantiate new question object
-	public void Question(String actual_question, String choice_A, String choice_B, String choice_C, String choice_D, String choice_E, String correct_answer) {
+	public Question(String actual_question, String choice_A, String choice_B, String choice_C, String choice_D, String choice_E, String correct_answer) {
 		this.actual_question = actual_question; 
 		this.choice_A = choice_A; 
 		this.choice_B = choice_B; 
