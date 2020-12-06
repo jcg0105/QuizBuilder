@@ -1,0 +1,4 @@
+The value for log10(10)= ?,1,0,ERROR,-1,2,B
+The value for log10(1)= ?,1,0,ERROR,-1,2,B
+Compute in Java log10(1)= ?,Math.log10(1),Mathlog(10,1),Mathlog10(1),Mathlog(1),Math.log(10,1),A
+The value for log2(2)= ? ,1,0,ERROR,-1,2,A

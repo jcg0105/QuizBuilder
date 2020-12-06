@@ -16,6 +16,7 @@ class QuizBuilder {
 		printMenu();
 	} // end main
 	static void printMenu() {// performs the main quiz menu
+		
 		int menu_entry;
 		do {
 			System.out.println("Menu.");
@@ -52,13 +53,17 @@ class QuizBuilder {
 		File math_file = new File("test_GRE_questions.csv").getAbsoluteFile();
 		ReadCSV read_math_quiz = new ReadCSV(math_file); //an instance of the ReadCSV() class
 		ArrayList<Question> Math_Quiz = read_math_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
-		// System.out.println("PRINT THE ARRAY LIST");
-		// System.out.println(Math_Quiz.toString());
 	} // end getMathQuiz
-	static void getVocabQuiz() {
+	static void getVocabQuiz() { //reads in CSV with vocab questions, question options, and answers; called by printMenu
+		System.out.println("Match the word with the correct definition.");
+		File vocab_file = new File("test_GRE_questions_vocab.csv").getAbsoluteFile();
+		ReadCSV read_vocab_quiz = new ReadCSV(vocab_file); //an instance of the ReadCSV() class
+		ArrayList<Question> Vocab_Quiz = read_vocab_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
 	} // getVocabQuiz
-	static void getCSC212Quiz() {
-		// getCSC212Quiz
+	static void getCSC212Quiz() { // reads in CSV corresponding to cs212 questions, question options, and answers; called by printMenu
+		File csc212_file = new File("numbersJavaQuiz.csv").getAbsoluteFile();
+		ReadCSV read_csc212_quiz = new ReadCSV(csc212_file); //an instance of the ReadCSV() class
+		ArrayList<Question> CSC212_Quiz = read_csc212_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
 	} // getCSC212Quiz
 	
 }//class QuizBuilder 
@@ -82,7 +87,6 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		ArrayList<Question> Question_ARRAYLIST = new ArrayList<>(); //list of Questions
 		while ( fin.hasNext() ){ //do this until it reaches the end of the questions CSV
 			String current_question = fin.nextLine();
-			//String[] questions = current_question.split(",");
 			String[] question_parts_qchoicesora = current_question.split(",");
 			Question Q = new Question(question_parts_qchoicesora[0],
 			question_parts_qchoicesora[1],
@@ -99,18 +103,17 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		return Question_ARRAYLIST; 
 		}
 		static int[] readRecord (ArrayList<Question> list_of_questions_arraylist) {	// <-- pass in list of questions
-		Scanner fin = null; 
+		Scanner scan = new Scanner(System.in);
 		
+		double grade; // number_correct / number_attempted * 100
 		// counters
 		int number_correct_int = 0;
 		int number_attempted_int = 0;
-		int amount = 0;
-		
-		//int a[] = {1, 2};
+		int amount = 0; // current question
 		
 		// a location for the user to state how many questions they would like to recieve
 		Scanner amount_user_will_answer = new Scanner(System.in); // starts the scanner
-		System.out.println("How many questions would you like to answer?");  // prompt for the int
+		System.out.println("How many questions would you like to answer? The current quiz is " + list_of_questions_arraylist.size() + " questions long.");  // prompt for the int
 		int amount_user_will_answer_int = amount_user_will_answer.nextInt(); //scanner takes in the next line
 		do {
 			// opportunity for the user to input their guess
@@ -121,25 +124,30 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 			
 			// checks to see if the user answered the question correctly
 			if (user_entry_string.equalsIgnoreCase(list_of_questions_arraylist.get(amount).correct_answer)){
-				System.out.println("correct");
+				System.out.println("Correct");
 				number_correct_int++;
 				number_attempted_int++;
 			} else {
-				System.out.println("false, the correct answer is " + list_of_questions_arraylist.get(amount).correct_answer);
+				System.out.println("False, the correct answer is " + list_of_questions_arraylist.get(amount).correct_answer);
 				number_attempted_int++;
 			}
 			amount ++;
-			//readRecord(list_of_questions_arraylist);
 		} while ( amount < amount_user_will_answer_int && amount < list_of_questions_arraylist.size());
 		
 		
 		//do this for the number of questions the user wants or until the CSV runs out of questions
 		int[] score = {number_correct_int, number_attempted_int};
-		int grade = (int) (score[0] / score[1]) * 100;
+		grade = (double) ((score[0] / score[1]) * 100); 
 		System.out.println("You scored " + score[0] + " out of " + score[1] + ".\nYour grade is " + grade + "%.");
-		//while loop -- end program early
-		return score; //returns an array with the score. ex. [3, 4]
-		//return a;
+		
+		//skip returning to menu after quiz is taken
+		System.out.println("Take quiz again? (y/n) ");
+		String take_quiz_again = scan.nextLine();
+		if (take_quiz_again.equalsIgnoreCase("Y")) { readRecord(list_of_questions_arraylist); }
+		else {return score; }
+		
+		return score;
+		
 	} // readRecord class
 	
 } // ReadCSV class 
@@ -173,7 +181,6 @@ public class Question {
 	public String toString() {
 		return "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E;
 	}//toString 
-	public String toString_correct_answer_only() {
-		return correct_answer;
-	}//toString 
+	
 }//class Question_List
+
