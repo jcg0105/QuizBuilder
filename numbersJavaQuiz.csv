@@ -1,4 +1,45 @@
 The value for log10(10)= ?,1,0,ERROR,-1,2,B
 The value for log10(1)= ?,1,0,ERROR,-1,2,B
-Compute in Java log10(1)= ?,Math.log10(1),Mathlog(10,1),Mathlog10(1),Mathlog(1),Math.log(10,1),A
+This method is used to insert an item w at position i into a ArrayList,insert(i comma w),A[i]= w ,A.add(w),A.add(i comma w),A[w]= w,D
 The value for log2(2)= ? ,1,0,ERROR,-1,2,A
+Which statement correctly defines an ArrayList V for holding integers?,List<Integer> V = new ArrayList <>();,List<Integer> V = new List <>(0);,List <int> V = new ArrayList <>();,,List <double> V = new ArrayList <>();,A
+This method returns the number of elements in an ArrayList A.,A.size,A.length,num_elements,A.size(),A.elements(),D
+This ArrayList method removes an item w from a ArrayList A.,A.remove_item(w),delete_item(w), A.erase(w),A.remove(i) where i is the first position of w,pop(w),D
+This ArrayList method returns true if the ArrayList A has no elements.,has_no_elements(A),A.null_size,A.empty,A.isEmpty(),A.emptySet(),D
+Find if element w is in ArrayList V:,V.contains(w),V.member(w) ,V.search(w),V.find(w),V.existsIn(w),A
+Find maximum of an ArrayList V of Numbers:,V.max() , Collections.max(V);,maximum(V) ,Arrays.max(V),V.total,B
+Shuffle an ArrayList V:,V.shuffle() ,Collections.shuffle(V);,maximum(V)  ,Arrays.shuffle(V),rearrange(V);,B
+Check if two ArrayLists V1 and V2 are equal:,V1.equals(V2),V1 == V2  ,V1.equals(V2),V.equal(V2),V1.contains(V2) && V2.contains(V2);,C
+"To access an array element, use the array name and the element's",data type,subscript/index,name,value,harddrive location,B
+"Unlike regular variables, these can hold multiple values.",constants,named constants,arrays,floating-point variables,integers,C
+The individual values contained in array are known as,parts,elements,numbers,constants,variables,B
+What is the last legal index that can be used with the following array? int V[5];,0,5,6,4,no limit,D
+How many elements does the following array have? int Bs[100];,100,101,999,1,0,A
+To change a character ch from upper to  lower case use:,lowerCase(ch),Character.lowerCase(ch);,Character.LowerCase(ch);,Character.toLowerCase(ch);,ch.lower(),D
+If the ASCII code of A is 65 what is the ASCII code for Z?,90,91,80,92,165,A
+If the ASCII code of a is 97 what is the ASCII code for z?,122,121,123,120,197,A
+Data stored here disappears once the program stops running or the computer is powered down.,on a CD,in RAM,on a backup tape,on the hard disk,on a USB stick inside the laptop,B
+What error message is thrown when a file is not found?,CannotFindSymbol,IndexOutOfBounds,FileNotFoundException,int Cannot Be Converted to String,no error is produced,C
+A function is executed when it is,called,prototyped,declared,defined,ran in the terminal,A
+This type of variable is defined inside a function and is not accessible outside the function.,local,reference,global,counter,variable,A
+This statement causes a function to end.,end,terminate,return,release,an error,C
+This function causes a program to terminate regardless of which function or control mechanism is executing.,terminate(),return(),continue(),System.exit(),void,D
+This operator takes an operand and reverses its truth/falsehood.,||,relational,arithmetic,!,&.not,D
+What is the value of: (true && false) || false,TRUE,FALSE,error,unknown,depends on other code,B
+This statement causes a loop to terminate early.,break,stop,NULL,terminate,return;,A
+If you want a user to enter exactly 20 values which loop would be the best to use?,do,for,while,infinite,do-while,B
+A two-dimensional array can be viewed as __ and __.,rows:columns,arguments:parameters,increments:decrements,x:y,all of the above,A
+A matrix can have elements of ____ data type(s).,one,two,four,any number,array only,A
+The value for log10(1)= ?,1,0,error message,-1,ln(10),B
+The value for log2(2)= ?,1,0,error,-1,2,A
+For any n positive integer (>0)  what is the value for n % n = ?,1,0,depends on n,n,one,B
+What is the rule of the Fibonacci sequence: 0 1 1 2 3 5 8 13 21 34,F(0)= F(1)= 1  and F(n+1) = F(n) + F(n-1),F(n+1) = F(n) + F(n-1),F(0)= F(1)= 1  and F(n) = F(n) + F(n-1),F(0)= F(1)= 1  and F(n+1) = F(n-2) + F(n-1),Not a Fibonacci sequence,A
+What is the next element in this sequence: 1 1 2 3 5     8      13 ..,8,21,5,3,ends at 13,B
+What is the next element X in this sequence: 1 1 2 3 5 8 13 .. (n-1) n  X?,n+1,2n-1,n+3,2n+1,ends at n,B
+A set is,a collection of non repeating elements disregarding order,a group of ordered elements,a collection of elements which can repeat,a finite collection of elements,all of the above,A
+Which statement is always false?,(A – B) U (B - A) = (A U B),(A – B) U  B =  A U B  ,(A- B) U A = A ,(A Intersection B) - B  = 0 ,all are true,D
+The _______ operation allows an item to be stored on a stack.,append,add,pop,push,push-pop,D
+The _____ operation allows an item to be removed from a stack.,push,pop,delete,add,remove,B
+Convert a word w into upper case letters:,w.toUpper(),w.toUpperCase(),toUpper(w),w.toUpper,!toLowerCase(w),B
+What does Integer.toHexString(256) return?,1000,100,1111,1110,10000,B
+What is a tree?,a graph without cycles,a graph big enough,a graph where for each node there are at least 2 parents,a graph since all graphs are trees,all of the above,A
