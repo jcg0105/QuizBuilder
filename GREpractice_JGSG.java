@@ -11,12 +11,11 @@ https://github.com/jcg0105 Hampshire College, 18F
 */  
 
 class QuizBuilder {
-	public static Scanner cin = new Scanner(System.in); //scanner for menu entry in printMenu()
 	public static void main(String[] args) {
 		printMenu();
 	} // end main
 	static void printMenu() {// performs the main quiz menu
-		
+		Scanner cin = new Scanner(System.in);
 		int menu_entry;
 		do {
 			System.out.println("Menu.");
@@ -29,7 +28,6 @@ class QuizBuilder {
 			System.out.println("Pick one.");
 			menu_entry = cin.nextInt();
 			switch(menu_entry) {
-				//added new function calls
 				case 1 : printInstructions(); break; 
 				case 2 : getMathQuiz(); break;
 				case 3 : getVocabQuiz(); break; 
@@ -101,7 +99,7 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		readRecord(Question_ARRAYLIST);
 		return Question_ARRAYLIST; 
 		}
-		static int[] readRecord (ArrayList<Question> list_of_questions_arraylist) {	// <-- pass in list of questions
+		static void readRecord (ArrayList<Question> list_of_questions_arraylist) {	// <-- pass in list of questions
 		Scanner scan = new Scanner(System.in);
 		
 		double grade; // (number_correct / number_attempted) * 100
@@ -144,11 +142,7 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		//skip returning to menu after quiz is taken
 		System.out.println("Take quiz again? (y/n) ");
 		String take_quiz_again = scan.nextLine();
-		if (take_quiz_again.equalsIgnoreCase("Y")) { readRecord(list_of_questions_arraylist); }
-		else {return score; }
-		
-		return score;
-		
+		if (take_quiz_again.equalsIgnoreCase("Y")) { readRecord(list_of_questions_arraylist); }	
 	} // readRecord class
 	
 } // ReadCSV class 
@@ -169,7 +163,7 @@ public class Question {
 		this.choice_E = choice_E; 
 		this.correct_answer = correct_answer;
 	} //constructor
-	/*
+
 	//		GETTERS
 	public String getQuestion() { return actual_question; }
 	public String getA() { return choice_A; } 
@@ -178,7 +172,7 @@ public class Question {
 	public String getD() { return choice_D; } 
 	public String getE() { return choice_E; }
 	public String getAnswer() { return correct_answer; }
-	*/
+
 	public String toString() {
 		return "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E;
 	}//toString 
