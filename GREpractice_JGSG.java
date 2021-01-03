@@ -22,8 +22,9 @@ class QuizBuilder {
 			System.out.println("1 = Instructions");
 			System.out.println("2 = Try math quiz");
 			System.out.println("3 = Try vocabulary quiz");
-			System.out.println("4 = Try CSC212 Quiz"); 
-			System.out.println("5 = Display authors and credits");
+			System.out.println("4 = none now"); 
+			System.out.println("5 = Try verbal reasoning Quiz"); 
+			System.out.println("6 = Display authors and credits");
 			System.out.println("0 = exit");
 			System.out.println("Pick one.");
 			menu_entry = cin.nextInt();
@@ -31,8 +32,9 @@ class QuizBuilder {
 				case 1 : printInstructions(); break; 
 				case 2 : getMathQuiz(); break;
 				case 3 : getVocabQuiz(); break; 
-				case 4 : getCSC212Quiz(); break;
-				case 5 : printCredits(); break;
+				//case 4 : getCSC212Quiz(); break;
+				case 5 : getVerbalReasoning(); break;
+				case 6 : printCredits(); break;
 				case 0 : break;
 				default : System.out.println("Cannot understand your response. Please try again.");
 			} // end menu switch
@@ -48,34 +50,27 @@ class QuizBuilder {
 							"\nDisclaimer: Questions are taken from various online sources. See the README for sources.\nThis program is purely for educational purposes.");
 	} // end printCredits
 	static void getMathQuiz() { // reads in the CSV with the math questions, question options, and answers; called by printMenu
-		//File math_file = new File("C:\\Users\\jujub\\Documents\\GitHub\\QuizBuilder\\test_GRE_questions.csv");
-		File math_file = new File("test_GRE_questions.csv").getAbsoluteFile();
-		ReadCSV read_math_quiz = new ReadCSV(math_file); //an instance of the ReadCSV() class
-		ArrayList<Question> Math_Quiz = read_math_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
+		File VerbalReasoning_file = new File("math_questions.txt").getAbsoluteFile();
+		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
+		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	} // end getMathQuiz
 	static void getVocabQuiz() { //reads in CSV with vocab questions, question options, and answers; called by printMenu
-		System.out.println("Match the word with the correct definition.");
-		File vocab_file = new File("test_GRE_questions_vocab.csv").getAbsoluteFile();
-		ReadCSV read_vocab_quiz = new ReadCSV(vocab_file); //an instance of the ReadCSV() class
-		ArrayList<Question> Vocab_Quiz = read_vocab_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
 	} // getVocabQuiz
-	static void getCSC212Quiz() { // reads in CSV corresponding to cs212 questions, question options, and answers; called by printMenu
-		File csc212_file = new File("numbersJavaQuiz.csv").getAbsoluteFile();
-		ReadCSV read_csc212_quiz = new ReadCSV(csc212_file); //an instance of the ReadCSV() class
-		ArrayList<Question> CSC212_Quiz = read_csc212_quiz.process_the_CSV();//the process_the_CSV() function within the ReadCSV() class
-	} // getCSC212Quiz
+	static void getVerbalReasoning() { 
+		File VerbalReasoning_file = new File("verbal_reasoning_questions.txt").getAbsoluteFile();
+		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
+		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+	} // getVerbalReasoning
 	
 }//class QuizBuilder 
 
-public class ReadCSV { // ReadQuestionCSV --> ReadCSV
+public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 	File fileName;
-	public ReadCSV(File fileName) {
+	public ReadTXT(File fileName) {
 		this.fileName = fileName;
-	} //ReadCSV constructor
-	
-	public ArrayList<Question> process_the_CSV() {
+	} //ReadTXT constructor
+	public ArrayList<Question> process_the_txt() {
 		Scanner fin = null;
-		
 	    try { 	fin = new Scanner(fileName); }// attempts to read the file
 		catch (IOException ex) {
 				System.out.println("file not found!");
@@ -85,20 +80,29 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		ArrayList<Question> Question_ARRAYLIST = new ArrayList<>(); //list of Questions
 		while ( fin.hasNext() ){ //do this until it reaches the end of the questions CSV
 			String current_question = fin.nextLine();
-			String[] question_parts_qchoicesora = current_question.split(",");
-			Question Q = new Question(question_parts_qchoicesora[0],
-			question_parts_qchoicesora[1],
-			question_parts_qchoicesora[2],
-			question_parts_qchoicesora[3],
-			question_parts_qchoicesora[4],
-			question_parts_qchoicesora[5],
-			question_parts_qchoicesora[6]); // make a question record
+			String[] question_parts_qchoicesora = current_question.split("\t");
+			Question Q = new Question(question_parts_qchoicesora[0],//source
+			question_parts_qchoicesora[1],//number of answer choices
+			question_parts_qchoicesora[2],//the correct answer(s)
+			question_parts_qchoicesora[3],//question instructions
+			question_parts_qchoicesora[4],//the question itself
+			question_parts_qchoicesora[5],//answer choice A
+			question_parts_qchoicesora[6],//answer choice B
+			question_parts_qchoicesora[7],//answer choice C
+			question_parts_qchoicesora[8],//answer choice D
+			question_parts_qchoicesora[9],//answer choice E
+			question_parts_qchoicesora[10],//answer choice F
+			question_parts_qchoicesora[11],//answer choice G
+			question_parts_qchoicesora[12],//answer choice H
+			question_parts_qchoicesora[13]);//answer choice I
+			// makes a question record
 			
 			Question_ARRAYLIST.add(Q); // add each question to List of Questions
 		}//while
 		readRecord(Question_ARRAYLIST);
 		return Question_ARRAYLIST; 
-		}
+	}// process_the_txt
+		
 		static void readRecord (ArrayList<Question> list_of_questions_arraylist) {	// <-- pass in list of questions
 		Scanner scan = new Scanner(System.in);
 		
@@ -120,12 +124,12 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 			String user_entry_string = guess_entry.nextLine(); //scanner takes in the next line
 			
 			// checks to see if the user answered the question correctly
-			if (user_entry_string.equalsIgnoreCase(list_of_questions_arraylist.get(amount).correct_answer)){
+			if (user_entry_string.equalsIgnoreCase(list_of_questions_arraylist.get(amount).correct_letters)){
 				System.out.println("Correct");
 				number_correct_int++;
 				number_attempted_int++;
 			} else {
-				System.out.println("False, the correct answer is " + list_of_questions_arraylist.get(amount).correct_answer);
+				System.out.println("Incorrect. The correct answer is " + list_of_questions_arraylist.get(amount).correct_letters);
 				number_attempted_int++;
 			}
 			amount ++;
@@ -145,36 +149,83 @@ public class ReadCSV { // ReadQuestionCSV --> ReadCSV
 		if (take_quiz_again.equalsIgnoreCase("Y")) { readRecord(list_of_questions_arraylist); }	
 	} // readRecord class
 	
-} // ReadCSV class 
+} // ReadTXT class 
 
 
 //Question class -- takes parameters: Question, 5 answer options, and correct answer
 public class Question {
 	
-	String actual_question; String choice_A; String choice_B; String choice_C; String choice_D; String choice_E; String correct_answer; 
+	String source;
+	String total_answers;
+	String correct_letters; 
+	String instructions;
+	String actual_question;
+	String choice_A;
+	String choice_B;
+	String choice_C;
+	String choice_D;
+	String choice_E;
+	String choice_F;
+	String choice_G;
+	String choice_H;
+	String choice_I;
 	
 	//instantiate new question object
-	public Question(String actual_question, String choice_A, String choice_B, String choice_C, String choice_D, String choice_E, String correct_answer) {
+	public Question(String source, String total_answers, String correct_letters, String instructions, String actual_question, String choice_A, String choice_B, String choice_C, String choice_D, String choice_E, String choice_F, String choice_G, String choice_H, String choice_I ) {
+		this.source = source;
+		this.total_answers = total_answers;
+		this.correct_letters = correct_letters;
+		this.instructions = instructions;
 		this.actual_question = actual_question; 
 		this.choice_A = choice_A; 
 		this.choice_B = choice_B; 
 		this.choice_C = choice_C; 
 		this.choice_D = choice_D; 
-		this.choice_E = choice_E; 
-		this.correct_answer = correct_answer;
+		this.choice_E = choice_E;
+		this.choice_F = choice_F; 
+		this.choice_G = choice_G; 
+		this.choice_H = choice_H;
+		this.choice_I = choice_I; 		
+		
 	} //constructor
 
 	//		GETTERS
-	public String getQuestion() { return actual_question; }
+	public String getSource() {return source;}
+	public String getTotalAnswers() { return total_answers; }
+	public String getAnswer() { return correct_letters; }
+	public String getInstructions() { return instructions; }
+	public String getActualQuestion() { return actual_question; }
 	public String getA() { return choice_A; } 
 	public String getB() { return choice_B; }
 	public String getC() { return choice_C; }
 	public String getD() { return choice_D; } 
 	public String getE() { return choice_E; }
-	public String getAnswer() { return correct_answer; }
+	public String getF() { return choice_F; }
+	public String getG() { return choice_G; }
+	public String getH() { return choice_H; } 
+	public String getI() { return choice_I; }
+	
 
 	public String toString() {
-		return "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E;
+		//put the if statements here to have a variable number of answer choices.
+		if (total_answers.equals("3")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\n" + source + "\n";
+		} else if (total_answers.equals("4")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + source + "\n";
+		} else if (total_answers.equals("5")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n";
+		} else if (total_answers.equals("6")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n";
+		} else if (total_answers.equals("7")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\n" + source + "\n";
+		} else if (total_answers.equals("8")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\n" + source + "\n";
+		} else if (total_answers.equals("9")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\nI. " + choice_I + "\n" + source + "\n";
+		} else {
+			return "not working";
+		}
+		
 	}//toString 
 	
 }//class Question_List
