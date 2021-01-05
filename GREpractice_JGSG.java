@@ -1,15 +1,12 @@
 /* file: QuizBuilder/QuizBuilder_JGSG.java */
-
 import java.util.*;
 import java.io.*; 
 import java.util.Scanner;
-
 /* 
 Questions? Reach out to:
 https://github.com/SarahGillespie Smith College, Class of 2022J
 https://github.com/jcg0105 Hampshire College, 18F
 */  
-
 class QuizBuilder {
 	public static void main(String[] args) {
 		printMenu();
@@ -54,20 +51,19 @@ class QuizBuilder {
 		ReadTXT read_math_questions_quiz = new ReadTXT(math_questions_file); //an instance of the ReadTXT() class
 		ArrayList<Question> math_questions_quiz = read_math_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	} // end getMathQuiz
-	static void getVocabQuiz() { //reads in CSV with vocab questions, question options, and answers; called by printMenu
+	static void getVocabQuiz() { //reads in CSV with the vocabulary words and definitions; called by printMenu
 		File vocabulary_questions_file = new File("vocabulary_questions.txt").getAbsoluteFile();
 		ReadTXT read_vocabulary_questions_quiz = new ReadTXT(vocabulary_questions_file); //an instance of the ReadTXT() class
 		ArrayList<Question> vocabulary_questions_quiz = read_vocabulary_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	}
-	static void getVerbalReasoning() { 
+	static void getVerbalReasoning() { // reads in a CSV with the verbal reasoning questions; called by printMenu
 		File VerbalReasoning_file = new File("verbal_reasoning_questions.txt").getAbsoluteFile();
 		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
 		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	} // getVerbalReasoning
-	
 }//class QuizBuilder 
 
-public class ReadTXT { // ReadQuestionCSV --> ReadTXT
+public class ReadTXT { // reads in a .txt file
 	File fileName;
 	public ReadTXT(File fileName) {
 		this.fileName = fileName;
@@ -79,9 +75,9 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 				System.out.println("file not found!");
 				System.out.println(ex);
 		}// catch for if the file is not found
-		
+
 		ArrayList<Question> Question_ARRAYLIST = new ArrayList<>(); //list of Questions
-		while ( fin.hasNext() ){ //do this until it reaches the end of the questions CSV
+		while ( fin.hasNext() ){ //read in questions this until the while loop reaches the end of the text file
 			String current_question = fin.nextLine();
 			String[] question_parts_qchoicesora = current_question.split("\t");
 			Question Q = new Question(question_parts_qchoicesora[0],//source
@@ -99,8 +95,7 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 			question_parts_qchoicesora[12],//answer choice H
 			question_parts_qchoicesora[13]);//answer choice I
 			// makes a question record
-			
-			Question_ARRAYLIST.add(Q); // add each question to List of Questions
+			Question_ARRAYLIST.add(Q); // add each question to the list of questions
 		}//while
 		readRecord(Question_ARRAYLIST);
 		return Question_ARRAYLIST; 
@@ -114,7 +109,7 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 		int number_attempted_int = 0;
 		int amount = 0; // current question
 		
-		// a location for the user to state how many questions they would like to recieve
+		// opportunity for the user to state how many questions they would like to recieve
 		Scanner amount_user_will_answer = new Scanner(System.in); // starts the scanner
 		System.out.println("How many questions would you like to answer? The current quiz is " + list_of_questions_arraylist.size() + " questions long.");  // prompt for the int
 		int amount_user_will_answer_int = amount_user_will_answer.nextInt(); //scanner takes in the next line
@@ -136,8 +131,7 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 			}
 			amount ++;
 		} while ( amount < amount_user_will_answer_int && amount < list_of_questions_arraylist.size());
-		
-		
+
 		//do this for the number of questions the user wants or until the CSV runs out of questions
 		int[] score = {number_correct_int, number_attempted_int};
 		grade = (double) number_correct_int/number_attempted_int;
@@ -152,11 +146,8 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 	} // readRecord class
 	
 } // ReadTXT class 
-
-
-//Question class -- takes parameters: Question, 5 answer options, and correct answer
+//Question class -- takes parameters: Question, up to 9 answer options, and the correct answer
 public class Question {
-	
 	String source;
 	String total_answers;
 	String correct_letters; 
@@ -207,7 +198,6 @@ public class Question {
 	public String getH() { return choice_H; } 
 	public String getI() { return choice_I; }
 	
-
 	public String toString() {
 		//prints a variable number of answer choices based on the number of answer options
 		if (total_answers.equals("0")){
@@ -228,9 +218,7 @@ public class Question {
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\nI. " + choice_I + "\n" + source + "\n";
 		} else {
 			return "not working";
-		}
-		
+		}	
 	}//toString 
-	
 }//class Question_List
 
