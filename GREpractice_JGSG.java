@@ -55,7 +55,10 @@ class QuizBuilder {
 		ArrayList<Question> math_questions_quiz = read_math_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	} // end getMathQuiz
 	static void getVocabQuiz() { //reads in CSV with vocab questions, question options, and answers; called by printMenu
-	} // getVocabQuiz
+		File vocabulary_questions_file = new File("vocabulary_questions.txt").getAbsoluteFile();
+		ReadTXT read_vocabulary_questions_quiz = new ReadTXT(vocabulary_questions_file); //an instance of the ReadTXT() class
+		ArrayList<Question> vocabulary_questions_quiz = read_vocabulary_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+	}
 	static void getVerbalReasoning() { 
 		File VerbalReasoning_file = new File("verbal_reasoning_questions.txt").getAbsoluteFile();
 		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
@@ -206,7 +209,7 @@ public class Question {
 	
 
 	public String toString() {
-		//put the if statements here to have a variable number of answer choices.
+		//prints a variable number of answer choices based on the number of answer options
 		if (total_answers.equals("0")){
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\n" + source + "\n" + "Enter your response in the box.";
 		} else if (total_answers.equals("3")){
@@ -214,7 +217,7 @@ public class Question {
 		} else if (total_answers.equals("4")){
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + source + "\n";
 		} else if (total_answers.equals("5")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n";
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\n" + source + "\n";
 		} else if (total_answers.equals("6")){
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n";
 		} else if (total_answers.equals("7")){
