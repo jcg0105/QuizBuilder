@@ -50,9 +50,9 @@ class QuizBuilder {
 							"\nDisclaimer: Questions are taken from various online sources. See the README for sources.\nThis program is purely for educational purposes.");
 	} // end printCredits
 	static void getMathQuiz() { // reads in the CSV with the math questions, question options, and answers; called by printMenu
-		File VerbalReasoning_file = new File("math_questions.txt").getAbsoluteFile();
-		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
-		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+		File math_questions_file = new File("math_questions.txt").getAbsoluteFile();
+		ReadTXT read_math_questions_quiz = new ReadTXT(math_questions_file); //an instance of the ReadTXT() class
+		ArrayList<Question> math_questions_quiz = read_math_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
 	} // end getMathQuiz
 	static void getVocabQuiz() { //reads in CSV with vocab questions, question options, and answers; called by printMenu
 	} // getVocabQuiz
@@ -102,7 +102,6 @@ public class ReadTXT { // ReadQuestionCSV --> ReadTXT
 		readRecord(Question_ARRAYLIST);
 		return Question_ARRAYLIST; 
 	}// process_the_txt
-		
 		static void readRecord (ArrayList<Question> list_of_questions_arraylist) {	// <-- pass in list of questions
 		Scanner scan = new Scanner(System.in);
 		
@@ -208,7 +207,9 @@ public class Question {
 
 	public String toString() {
 		//put the if statements here to have a variable number of answer choices.
-		if (total_answers.equals("3")){
+		if (total_answers.equals("0")){
+			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\n" + source + "\n" + "Enter your response in the box.";
+		} else if (total_answers.equals("3")){
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\n" + source + "\n";
 		} else if (total_answers.equals("4")){
 			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + source + "\n";
