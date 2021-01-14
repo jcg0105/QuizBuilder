@@ -1,4 +1,3 @@
-source	answer choices	correct letters	instructions	question	choice1	choice2	choice3	choice4	choice5	choice6	choice7	choice8	choice9
 Adapted from https://www.kaptest.com/study/gre/top-52-gre-vocabulary-words/	5	E	Choose the matching word.	 a statement that contradicts itself but might be true	antipathy 	eulogy 	pedant 	gullible 	paradox 	EMPTY	EMPTY	EMPTY	EMPTY
 Adapted from https://www.kaptest.com/study/gre/top-52-gre-vocabulary-words/	5	A	Choose the matching word.	"to produce, cause, or give rise to (something)"	egender	enervate 	audacious 	desiccate 	vacillate 	EMPTY	EMPTY	EMPTY	EMPTY
 Adapted from https://www.kaptest.com/study/gre/top-52-gre-vocabulary-words/	5	C	Choose the matching word.	of the same or similar kind	ingenuous 	philanthropic 	homogenous	zeal 	laudable	EMPTY	EMPTY	EMPTY	EMPTY

@@ -1,12 +1,14 @@
 /* file: QuizBuilder/QuizBuilder_JGSG.java */
+
 import java.util.*;
 import java.io.*; 
-import java.util.Scanner;
+
 /* 
 Questions? Reach out to:
 https://github.com/SarahGillespie Smith College, Class of 2022J
 https://github.com/jcg0105 Hampshire College, 18F
 */  
+
 class QuizBuilder {
 	public static void main(String[] args) {
 		printMenu();
@@ -37,29 +39,32 @@ class QuizBuilder {
 			} // end menu switch
 		} while (menu_entry != 0);//repeat menu and its functions until the user exits the program by typing "0" into the menu
 	} // end printMenu
-	static void printInstructions() {//prints the instructions; called by printMenu
-		System.out.println("This is a multiple choice quiz to practice the GRE General Test. \nPress the letter of your answer choice.");
-		System.out.println("You will recieve immediate feedback if your choice is correct or not.");
+	static void printInstructions() {//prints the general instructions
+		System.out.println("This is a multiple choice quiz to practice the GRE General Test. \nType the letter of your answer choice.");
+		System.out.println("No tests in this program are timed. You will recieve immediate feedback if your choice is correct or not.");
 		System.out.println("You may want scratch paper and a pencil for the math quiz.");
 	} // end printInstructions
-	static void printCredits() { // prints the credits; called by printMenu
+	static void printCredits() { // prints the credits
 		System.out.println("Practice GRE Math and Vocabulary Quiz.\nAuthors: Julia Griner & Sarah Gillespie" +
 							"\nDisclaimer: Questions are taken from various online sources. See the README for sources.\nThis program is purely for educational purposes.");
+		System.out.println("Math quiz questions taken from: https://www.princetonreview.com/grad-school-advice/gre-math-practice#numeric_gre ");
+		System.out.println("Vocab quiz questions taken from: https://www.kaptest.com/study/gre/top-52-gre-vocabulary-words/");
+		System.out.println("Verbal Reasoning questions taken from: https://www.princetonreview.com/grad-school-advice/gre-verbal-practice");
 	} // end printCredits
-	static void getMathQuiz() { // reads in the CSV with the math questions, question options, and answers; called by printMenu
+	static void getMathQuiz() { // reads in txt with the math questions, question options, and answers
 		File math_questions_file = new File("math_questions.txt").getAbsoluteFile();
 		ReadTXT read_math_questions_quiz = new ReadTXT(math_questions_file); //an instance of the ReadTXT() class
-		ArrayList<Question> math_questions_quiz = read_math_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+		ArrayList<Question> math_questions_quiz = read_math_questions_quiz.process_the_txt();//the process_the_txt() function within the ReadTXT() class
 	} // end getMathQuiz
-	static void getVocabQuiz() { //reads in CSV with the vocabulary words and definitions; called by printMenu
+	static void getVocabQuiz() { //reads in txt with the vocabulary words and definitions
 		File vocabulary_questions_file = new File("vocabulary_questions.txt").getAbsoluteFile();
 		ReadTXT read_vocabulary_questions_quiz = new ReadTXT(vocabulary_questions_file); //an instance of the ReadTXT() class
-		ArrayList<Question> vocabulary_questions_quiz = read_vocabulary_questions_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+		ArrayList<Question> vocabulary_questions_quiz = read_vocabulary_questions_quiz.process_the_txt();//the process_the_txt() function within the ReadTXT() class
 	}
-	static void getVerbalReasoning() { // reads in a CSV with the verbal reasoning questions; called by printMenu
+	static void getVerbalReasoning() { // reads in a txt with the verbal reasoning questions
 		File VerbalReasoning_file = new File("verbal_reasoning_questions.txt").getAbsoluteFile();
 		ReadTXT read_VerbalReasoning_quiz = new ReadTXT(VerbalReasoning_file); //an instance of the ReadTXT() class
-		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_CSV() function within the ReadTXT() class
+		ArrayList<Question> VerbalReasoning_quiz = read_VerbalReasoning_quiz.process_the_txt();//the process_the_txt() function within the ReadTXT() class
 	} // getVerbalReasoning
 }//class QuizBuilder 
 
@@ -80,20 +85,24 @@ public class ReadTXT { // reads in a .txt file
 		while ( fin.hasNext() ){ //read in questions this until the while loop reaches the end of the text file
 			String current_question = fin.nextLine();
 			String[] question_parts_qchoicesora = current_question.split("\t");
-			Question Q = new Question(question_parts_qchoicesora[0],//source
-			question_parts_qchoicesora[1],//number of answer choices
-			question_parts_qchoicesora[2],//the correct answer(s)
-			question_parts_qchoicesora[3],//question instructions
-			question_parts_qchoicesora[4],//the question itself
-			question_parts_qchoicesora[5],//answer choice A
-			question_parts_qchoicesora[6],//answer choice B
-			question_parts_qchoicesora[7],//answer choice C
-			question_parts_qchoicesora[8],//answer choice D
-			question_parts_qchoicesora[9],//answer choice E
-			question_parts_qchoicesora[10],//answer choice F
-			question_parts_qchoicesora[11],//answer choice G
-			question_parts_qchoicesora[12],//answer choice H
-			question_parts_qchoicesora[13]);//answer choice I
+
+			// Fluent design adds legibility
+			Question Q = new Question()
+						.addTotalAns(question_parts_qchoicesora[1])
+						.addCorrectLetters(question_parts_qchoicesora[2])
+						.addInstructions(question_parts_qchoicesora[3])
+						.addQuestion(question_parts_qchoicesora[4])
+						.addChoiceA(question_parts_qchoicesora[5])
+						.addChoiceB(question_parts_qchoicesora[6])
+						.addChoiceC(question_parts_qchoicesora[7])
+						.addChoiceD(question_parts_qchoicesora[8]); //Guaranteed to be filled out (except for 2 math questions)
+			//add these options if necessary 
+			if (!question_parts_qchoicesora[0].equals("source ??")) { Q.addSource(question_parts_qchoicesora[0]); }
+			if (!question_parts_qchoicesora[9].equals("EMPTY")) { Q.addChoiceE(question_parts_qchoicesora[9]); }
+			if (!question_parts_qchoicesora[10].equals("EMPTY")) { Q.addChoiceF(question_parts_qchoicesora[10]); }
+			if (!question_parts_qchoicesora[11].equals("EMPTY")) { Q.addChoiceG(question_parts_qchoicesora[11]); }
+			if (!question_parts_qchoicesora[12].equals("EMPTY")) { Q.addChoiceH(question_parts_qchoicesora[12]); }
+			if (!question_parts_qchoicesora[13].equals("EMPTY")) { Q.addChoiceI(question_parts_qchoicesora[13]); }
 			// makes a question record
 			Question_ARRAYLIST.add(Q); // add each question to the list of questions
 		}//while
@@ -117,7 +126,7 @@ public class ReadTXT { // reads in a .txt file
 			// opportunity for the user to input their guess
 			Scanner guess_entry = new Scanner(System.in); // starts the scanner
 			System.out.println(list_of_questions_arraylist.get(amount));//prints the question
-			System.out.println("What is your answer?");  // prompt for the string
+			System.out.println("Answer: ");  // prompt for the string
 			String user_entry_string = guess_entry.nextLine(); //scanner takes in the next line
 			
 			// checks to see if the user answered the question correctly
@@ -132,7 +141,7 @@ public class ReadTXT { // reads in a .txt file
 			amount ++;
 		} while ( amount < amount_user_will_answer_int && amount < list_of_questions_arraylist.size());
 
-		//do this for the number of questions the user wants or until the CSV runs out of questions
+		//do this for the number of questions the user wants or until the quiz file runs out of questions
 		int[] score = {number_correct_int, number_attempted_int};
 		grade = (double) number_correct_int/number_attempted_int;
 		grade = grade*100;
@@ -163,62 +172,53 @@ public class Question {
 	String choice_H;
 	String choice_I;
 	
-	//instantiate new question object
-	public Question(String source, String total_answers, String correct_letters, String instructions, String actual_question, String choice_A, String choice_B, String choice_C, String choice_D, String choice_E, String choice_F, String choice_G, String choice_H, String choice_I ) {
-		this.source = source;
-		this.total_answers = total_answers;
-		this.correct_letters = correct_letters;
-		this.instructions = instructions;
-		this.actual_question = actual_question; 
-		this.choice_A = choice_A; 
-		this.choice_B = choice_B; 
-		this.choice_C = choice_C; 
-		this.choice_D = choice_D; 
-		this.choice_E = choice_E;
-		this.choice_F = choice_F; 
-		this.choice_G = choice_G; 
-		this.choice_H = choice_H;
-		this.choice_I = choice_I; 		
-		
-	} //constructor
-
-	//		GETTERS
-	public String getSource() {return source;}
-	public String getTotalAnswers() { return total_answers; }
-	public String getAnswer() { return correct_letters; }
-	public String getInstructions() { return instructions; }
-	public String getActualQuestion() { return actual_question; }
-	public String getA() { return choice_A; } 
-	public String getB() { return choice_B; }
-	public String getC() { return choice_C; }
-	public String getD() { return choice_D; } 
-	public String getE() { return choice_E; }
-	public String getF() { return choice_F; }
-	public String getG() { return choice_G; }
-	public String getH() { return choice_H; } 
-	public String getI() { return choice_I; }
+	public Question() { } //Instantiate empty Question object 
+	//		SETTERS -- implements fluent build design pattern
+	public Question addSource(String source) { this.source = source; return this; }
+	public Question addTotalAns(String total_answers) { this.total_answers = total_answers; return this; }
+	public Question addCorrectLetters(String correct_letters) { this.correct_letters = correct_letters; return this; }
+	public Question addInstructions(String instructions) { this.instructions = instructions; return this; }
+	public Question addQuestion(String actual_question) { this.actual_question = actual_question; return this; }
+	public Question addChoiceA(String choice_A) { this.choice_A = choice_A; return this; }
+	public Question addChoiceB(String choice_B) { this.choice_B = choice_B; return this; }
+	public Question addChoiceC(String choice_C) { this.choice_C = choice_C; return this; }
+	public Question addChoiceD(String choice_D) { this.choice_D = choice_D; return this; }
+	public Question addChoiceE(String choice_E) { this.choice_E = choice_E; return this; }
+	public Question addChoiceF(String choice_F) { this.choice_F = choice_F; return this; }
+	public Question addChoiceG(String choice_G) { this.choice_G = choice_G; return this; }
+	public Question addChoiceH(String choice_H) { this.choice_H = choice_H; return this; }
+	public Question addChoiceI(String choice_I) { this.choice_I = choice_I; return this; }
 	
 	public String toString() {
-		//prints a variable number of answer choices based on the number of answer options
-		if (total_answers.equals("0")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\n" + source + "\n" + "Enter your response in the box.";
-		} else if (total_answers.equals("3")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\n" + source + "\n";
-		} else if (total_answers.equals("4")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + source + "\n";
-		} else if (total_answers.equals("5")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\n" + source + "\n";
-		} else if (total_answers.equals("6")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n";
-		} else if (total_answers.equals("7")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\n" + source + "\n";
-		} else if (total_answers.equals("8")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\n" + source + "\n";
-		} else if (total_answers.equals("9")){
-			return "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\nI. " + choice_I + "\n" + source + "\n";
+		//prints a variable number of answer choices based on the number of answer options and if there is a source for the question 
+		String formatted_question = "";
+		if (source == null) {
+			switch (total_answers) {
+				case "0": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\n" + "Enter your response in the box."; break;
+				case "3": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\n"; break;
+				case "4": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\n"; break;
+				case "5": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\n"; break;
+				case "6": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n"; break;
+				case "7": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\n"; break;
+				case "8": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\n"; break;
+				case "9": formatted_question =  "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\nI. " + choice_I + "\n"; break;
+				default: formatted_question = "Error in formatting questions.";
+			}
 		} else {
-			return "not working";
-		}	
+			switch (total_answers) {
+				case "0": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\n" + source + "\n" + "Enter your response in the box."; break;
+				case "3": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\n" + source + "\n"; break;
+				case "4": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\n" + source + "\n"; break;
+				case "5": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\n" + source + "\n"; break;
+				case "6": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\n" + source + "\n"; break;
+				case "7": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\n" + source + "\n"; break;
+				case "8": formatted_question = "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\n" + source + "\n"; break;
+				case "9": formatted_question =  "\n" + "\n" + instructions + "\n" + "\n" + actual_question + "\nA. " + choice_A + "\nB. " + choice_B + "\nC. " + choice_C + "\nD. " + choice_D + "\nE. " + choice_E + "\nF. " + choice_F + "\nG. " + choice_G + "\nH. " + choice_H + "\nI. " + choice_I + "\n" + source + "\n"; break;
+				default: formatted_question = "Error in formatting questions.";
+			}
+		}
+		return formatted_question;
 	}//toString 
+
 }//class Question_List
 
